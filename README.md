@@ -36,6 +36,11 @@ on port 3001. The API health endpoint is `http://localhost:3001/api/health`.
 Uploaded PDFs are held in memory and limited to 5 MB. Analysis records are
 written to the MongoDB `analyses` collection.
 
+The backend is organized by responsibility: `routes/` defines endpoints,
+`controller/` handles request and response logic, `service/` contains PDF and
+skill analysis, `config/` connects MongoDB, `middleware/` handles uploads and
+errors, and `utils.js` contains shared helpers.
+
 ## Deploy as two Vercel projects
 
 Create one Vercel project with the root directory set to `frontend` and another
