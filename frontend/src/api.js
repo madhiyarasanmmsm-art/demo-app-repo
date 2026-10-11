@@ -1,13 +1,12 @@
-// All requests to the Express backend live here.
-// In dev, Vite proxies /api → http://localhost:3001 (see vite.config.js).
-const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+// The Vercel project routes /api requests to the backend service. In dev, Vite
+// proxies the same path to the local Express server (see vite.config.js).
 
 export async function analyzeResume(file, jd) {
   const formData = new FormData();
   formData.append("resume", file);
   formData.append("jd", jd);
 
-  const res = await fetch(`${API_BASE}/api/analyze`, {
+  const res = await fetch("/api/analyze", {
     method: "POST",
     body: formData,
   });

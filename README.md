@@ -41,12 +41,11 @@ The backend is organized by responsibility: `routes/` defines endpoints,
 skill analysis, `config/` connects MongoDB, `middleware/` handles uploads and
 errors, and `utils.js` contains shared helpers.
 
-## Deploy as two Vercel projects
+## Deploy on Vercel
 
-Create one Vercel project with the root directory set to `frontend` and another
-with the root directory set to `backend`. In the frontend project's environment
-variables, set `VITE_API_URL` to the deployed backend origin (for example,
-`https://your-api.vercel.app`, with no trailing slash). Set `MONGO_URI` in the
-backend project's environment variables to your hosted MongoDB connection
-string. The frontend config builds the Vite app and routes client-side paths to
-`index.html`; the backend config sends requests to the Express function.
+Create one Vercel project using the repository root. The root `vercel.json`
+defines separate `frontend` (Vite) and `backend` (Express) services. Requests
+under `/api/*` go to the backend; all other paths go to the frontend. Set
+`MONGO_URI` in the Vercel project's environment variables to your hosted
+MongoDB connection string. The frontend calls the API through the same domain,
+so it does not need a separate `VITE_API_URL`.
