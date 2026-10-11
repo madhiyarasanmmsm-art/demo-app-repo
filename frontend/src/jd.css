@@ -1,0 +1,52 @@
+/* JD input + server-side results — additions to index.css */
+
+.jd-box {
+  max-width: 560px;
+  margin: 0 auto 20px;
+  text-align: left;
+}
+
+.jd-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.jd-textarea {
+  width: 100%;
+  resize: vertical;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font: inherit;
+  padding: 10px 12px;
+  min-height: 90px;
+}
+
+.jd-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.match-badge {
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+.match-badge strong {
+  color: var(--accent-2);
+}
+
+.empty-note {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}

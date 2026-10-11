@@ -1,5 +1,5 @@
 {
-  "name": "shipped-resume-parser",
+  "name": "shipped-resume-parser-frontend",
   "private": true,
   "version": "0.1.0",
   "type": "module",

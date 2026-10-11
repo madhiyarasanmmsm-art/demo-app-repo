@@ -2,17 +2,17 @@ const STEPS = [
   {
     num: "1",
     title: "Drop your PDF",
-    text: "Drag a résumé in or browse for it. In this mock, the file never leaves your machine.",
+    text: "Drag a resume in or browse for it. Uploads are held in memory only — the 5 MB cap matches the backend.",
   },
   {
     num: "2",
     title: "We scan for signals",
-    text: "Contact info, structure, and skills — matched against a library of 45+ keywords.",
+    text: "The PDF text is extracted server-side and its skills are matched against your job description.",
   },
   {
     num: "3",
     title: "Get your score",
-    text: "A 0–100 score, the skills present, and the gaps worth filling before you apply.",
+    text: "A match score, the skills present, and the gaps worth filling — every analysis is stored in MongoDB.",
   },
 ];
 

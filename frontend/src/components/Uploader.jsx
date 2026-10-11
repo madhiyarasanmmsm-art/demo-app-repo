@@ -11,9 +11,10 @@ function formatSize(bytes) {
 export default function Uploader({ onAnalyze }) {
   const fileInputRef = useRef(null);
   const [file, setFile] = useState(null);
+  const [jd, setJd] = useState("");
   const [error, setError] = useState("");
   const [dragging, setDragging] = useState(false);
-  const [analyzing, setAnalyzing] = useState(false);
+  const [stage, setStage] = useState(""); // "", "pdf" or "jd"
 
   function validate(candidate) {
     if (candidate.type !== "application/pdf" && !candidate.name.toLowerCase().endsWith(".pdf")) {
@@ -44,20 +45,25 @@ export default function Uploader({ onAnalyze }) {
   }
 
   async function analyze() {
-    if (!file || analyzing) return;
-    setAnalyzing(true);
-    onAnalyze(file);
-    // give the fake progress a moment so the demo feels alive
-    await new Promise((r) => setTimeout(r, 1300));
-    setAnalyzing(false);
+    if (!file || !jd.trim() || stage) return;
+    setError("");
+    setStage("pdf");
+    const t1 = setTimeout(() => setStage("jd"), 900);
+    try {
+      await onAnalyze(file, jd);
+    } finally {
+      clearTimeout(t1);
+      setStage("");
+    }
   }
 
   function changeFile() {
     setError("");
-    setAnalyzing(false);
+    setStage("");
     fileInputRef.current?.click();
   }
 
+  const analyzing = stage !== "";
   const idle = !file && !analyzing;
 
   return (
@@ -75,7 +81,7 @@ export default function Uploader({ onAnalyze }) {
         {idle && (
           <>
             <div className="upload-icon" aria-hidden="true">📄</div>
-            <p className="upload-title">Drag &amp; drop your résumé PDF</p>
+            <p className="upload-title">Drag &amp; drop your resume PDF</p>
             <p className="upload-hint">
               or <span className="link">browse files</span> — PDF only, up to 5 MB
             </p>
@@ -91,9 +97,22 @@ export default function Uploader({ onAnalyze }) {
                 <small>{formatSize(file.size)}</small>
               </span>
             </div>
+            <div className="jd-box">
+              <label className="jd-label" htmlFor="jd">Job description</label>
+              <textarea
+                id="jd"
+                className="jd-textarea"
+                placeholder="Paste the job description here — the resume is scored against it…"
+                rows={6}
+                value={jd}
+                onChange={(e) => setJd(e.target.value)}
+              />
+            </div>
             <div className="file-actions">
-              <button className="btn btn-primary" onClick={analyze}>Analyze résumé</button>
-              <button className="btn btn-ghost" onClick={changeFile}>Change file</button>
+              <button className="btn btn-primary" onClick={analyze} disabled={!jd.trim()}>
+                Compare &amp; score
+              </button>
+              <button className="btn btn-ghost" onClick={changeFile}>Change resume</button>
             </div>
           </>
         )}
@@ -101,7 +120,7 @@ export default function Uploader({ onAnalyze }) {
         {analyzing && (
           <>
             <div className="spinner" aria-hidden="true" />
-            <p>Scanning {file.name} for skills…</p>
+            <p>{stage === "pdf" ? "Extracting text from PDF…" : "Comparing with the job description…"}</p>
           </>
         )}
 

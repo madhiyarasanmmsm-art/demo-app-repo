@@ -10,17 +10,26 @@ export default function Results({ result }) {
     return () => cancelAnimationFrame(raf);
   }, [result]);
 
-  const { score, found, missing } = result;
+  const { jdTitle, matched, missing, matchedCount } = result;
+  const score = result.score ?? matchedCount;
 
   const summary =
     score >= 80
-      ? "Strong résumé — close to ready to ship. 🚀"
+      ? "Strong match — close to ready to apply. 🚀"
       : score >= 60
-        ? "Good base — a few gaps are worth filling."
-        : "Early draft — plenty of room to grow. 0 → shipped!";
+        ? "Good match — a few gaps are worth filling."
+        : "Early fit — plenty of room to grow. 0 → shipped!";
 
   return (
     <section id="results" className="container results">
+      <p className="match-badge">
+        {jdTitle ? (
+          <>Matched against: <strong>{jdTitle}</strong> — {matchedCount} of {matchedCount + missing.length} required skills found</>
+        ) : (
+          <>{matchedCount} required skills found</>
+        )}
+      </p>
+
       <div className="results-grid">
         <div className="score-card">
           <div className="ring-wrap">
@@ -44,11 +53,12 @@ export default function Results({ result }) {
 
         <div className="skills-card present">
           <div className="card-head">
-            <h2>Skills found</h2>
-            <span className="count-badge good">{found.length}</span>
+            <h2>Skills you have</h2>
+            <span className="count-badge good">{matched.length}</span>
           </div>
           <ul className="chips">
-            {found.map((skill) => (
+            {matched.length === 0 && <li className="empty-note">None detected — the parser found no overlap with the job description.</li>}
+            {matched.map((skill) => (
               <li key={skill} className="chip">{skill}</li>
             ))}
           </ul>
@@ -66,13 +76,6 @@ export default function Results({ result }) {
           </ul>
         </div>
       </div>
-
-      <p className="results-note">
-        Mock analysis — this result is generated in your browser (seeded from the
-        file name, so the same file always scores the same). Swap
-        <code>mockAnalyze()</code> in <code>src/lib/mockAnalysis.js</code> for a
-        real API when the backend ships.
-      </p>
     </section>
   );
 }

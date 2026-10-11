@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="container">
         <span className="brand">0<span className="brand-arrow">→</span>Shipped</span>
-        <p>Front-end mock for the 0 → Shipped build log. Real parsing API coming next.</p>
+        <p>Resume vs job description matching — Express + MongoDB behind, React ahead.</p>
         <p><small>© {new Date().getFullYear()} — built with React, Vite &amp; plain CSS.</small></p>
       </div>
     </footer>
