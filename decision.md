@@ -5,3 +5,5 @@ i want to convert this entire project into a react project
 i want you to move this react project into frontend folder and build a backend folder that contains the express server to handle the request, lets connect to mongodb
 
 the application should take resume  PDF and a jd for comparison, ai part will be added later.
+
+backend folder should container server.js, rout

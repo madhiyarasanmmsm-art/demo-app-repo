@@ -2,11 +2,19 @@ import { MongoClient } from "mongodb";
 import "dotenv/config";
 
 let client;
+let connection;
 
 export async function connectDB(uri) {
-  client = new MongoClient(uri);
-  await client.connect();
-  console.log("✓ Connected to MongoDB");
+  if (!client) client = new MongoClient(uri);
+  if (!connection) {
+    connection = client.connect().then(() => {
+      console.log("✓ Connected to MongoDB");
+    }).catch((err) => {
+      connection = null;
+      throw err;
+    });
+  }
+  await connection;
 }
 
 export function getCollection() {
