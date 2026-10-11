@@ -1,19 +1,19 @@
 import { getAnalysesCollection } from "../config/db.js";
 import { extractPdfText } from "./extractPdfText.js";
-import { matchSkills } from "./matchSkills.js";
+import { scoreResumeWithLabd } from "./labd.js";
 
 export async function analyzeAndStore({ buffer, jdText, resumeName }) {
   const text = await extractPdfText(buffer);
-  const { matched, missing } = matchSkills(text, jdText);
-  const total = matched.length + missing.length;
-  const score = total === 0 ? 0 : Math.round((matched.length / total) * 100);
+  const { jdTitle, score, matched, missing, summary } = await scoreResumeWithLabd(text, jdText);
   const record = {
     resumeName,
     jdExcerpt: jdText.slice(0, 200),
+    jdTitle,
     matched,
     missing,
     matchedCount: matched.length,
     score,
+    summary,
     createdAt: new Date(),
   };
 
@@ -25,5 +25,5 @@ export async function analyzeAndStore({ buffer, jdText, resumeName }) {
     console.error("Failed to store analysis:", err.message);
   }
 
-  return { score, matched, missing, matchedCount: matched.length, stored };
+  return { jdTitle, score, matched, missing, matchedCount: matched.length, summary, stored };
 }

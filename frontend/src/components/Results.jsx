@@ -13,7 +13,7 @@ export default function Results({ result }) {
   const { jdTitle, matched, missing, matchedCount } = result;
   const score = result.score ?? matchedCount;
 
-  const summary =
+  const scoreSummary =
     score >= 80
       ? "Strong match — close to ready to apply. 🚀"
       : score >= 60
@@ -48,7 +48,7 @@ export default function Results({ result }) {
               <small>/100</small>
             </div>
           </div>
-          <p className="score-summary">{summary}</p>
+          <p className="score-summary">{result.summary || scoreSummary}</p>
         </div>
 
         <div className="skills-card present">
