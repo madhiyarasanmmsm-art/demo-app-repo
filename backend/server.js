@@ -43,6 +43,19 @@ async function main() {
     }
   });
 
+  // Multer errors (including the upload size limit) should use the same JSON
+  // response shape as the rest of the API so the frontend can show them.
+  app.use((err, req, res, next) => {
+    if (err instanceof multer.MulterError && err.code === "LIMIT_FILE_SIZE") {
+      return res.status(413).json({ error: "Resume PDF must be 5 MB or smaller." });
+    }
+    if (err) {
+      console.error(err);
+      return res.status(400).json({ error: "Unable to process the uploaded resume." });
+    }
+    next();
+  });
+
   const port = Number(process.env.PORT) || 3001;
   app.listen(port, () => {
     console.log(`✓ API listening on http://localhost:${port}`);

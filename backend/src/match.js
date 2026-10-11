@@ -25,10 +25,13 @@ export function matchSkills(resumeText, jdText) {
   const missing = [];
 
   for (const term of jdTerms) {
+    // Keep both sides of the score limited to skill-like terms. Counting
+    // ordinary prose as a match made scores depend on how the JD was written.
+    if (!isLikelySkillTerm(term)) continue;
     const pretty = prettyTerm(term);
     if (resume.includes(term)) {
       if (!matched.includes(pretty)) matched.push(pretty);
-    } else if (isLikelySkillTerm(term) && !missing.includes(pretty)) {
+    } else if (!missing.includes(pretty)) {
       missing.push(pretty);
     }
   }

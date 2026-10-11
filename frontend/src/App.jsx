@@ -28,6 +28,9 @@ export default function App() {
       <main>
         <Hero />
         <Uploader onAnalyze={handleAnalyze} />
+        {serverError && (
+          <p className="container error server-error" role="alert">{serverError}</p>
+        )}
         {result && <Results result={result} />}
         <HowItWorks />
       </main>
